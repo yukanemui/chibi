@@ -15,4 +15,5 @@ class Q(object):
 
 
 q = Q(1,2)
-print(q)
+q = Q(1,3)
+print(q1.add(q2))
