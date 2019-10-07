@@ -1,7 +1,8 @@
 class Q(object):
-    def __init__(self, a,b):
-        self.a = a
-        self.b = b
+    def __init__(self, a,b=1):
+        gcd = math.gcd(a.b)
+        self.a = a//gcd
+        self.b = b//gcd
     def __repr__(self):
         if self.b == 1:
             return str(self.a)
