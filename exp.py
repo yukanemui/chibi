@@ -1,12 +1,12 @@
-from exp import Val, Add
-def parse(s: str):
-   num = int(s)
-   return Val(num)
-e = parse("123")
-print(e)
-s = "1+2"
-pos = s.find('+')
-print('pos',pos)
-s1 = s[0:pos]
-s2 = s[pos+1:]
-print(s, s1, s2)
+class Expr(object):
+    pass
+
+class Val(Expr):
+    __slots__ = ['value']
+    def __init__(self, value = 0):
+        self.value = value
+    def __repr__(self):
+        return f'Val({self.value})'
+    def eval(self):
+        return self.value
+
