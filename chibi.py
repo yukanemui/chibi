@@ -1,25 +1,91 @@
-v = Val(1)
-print(v)
-assert v.eval() == 1
+import pegpy
+#from pegpy.tpeg import ParseTree
+peg = pegpy.grammar('chibi.tpeg')
+parser = pegpy.generate(peg)
+tree = parser('1+2*3')
+print(repr(tree))
+tree = parser('1@2*3')
+print(repr(tree))
+class Expr(object):
+    @classmethod
+    def new(cls, v):
+        if isinstance(v, Expr):
+            return v
+        return Val(v)
+class Val(Expr):
+    __slot__ = ['value']
+    def __init__(self, value):
+        self.value = value
+    def __repr__(self):
+        return f'Val({self.value})'
+    def eval(self, env: dict):
+        return self.value
+e = Val(0)
+assert e.eval({}) == 0
+class Binary(Expr):
+    __slot__ = ['left', 'right']
+    def __init__(self, left, right):
+        self.left = Expr.new(left)
+        self.right = Expr.new(right)
+    def __repr__(self):
+        classname = self.__class__.__name__
+        return f'{classname}({self.left},{self.right})'
+class Add(Binary):
+    __slot__ = ['left', 'right']
+    def eval(self, env: dict):
+        return self.left.eval(env) + self.right.eval(env)
+class Sub(Binary):
+    __slot__ = ['left', 'right']
+    def eval(self, env: dict):
+        return self.left.eval(env) - self.right.eval(env)
+class Mul(Binary):
+    __slot__ = ['left', 'right']
+    def eval(self, env: dict):
+        return self.left.eval(env) * self.right.eval(env)
+class Div(Binary):
+    __slot__ = ['left', 'right']
+    def eval(self, env: dict):
+        return self.left.eval(env) // self.right.eval(env)
+class Mod(Binary):
+    __slot__ = ['left', 'right']
+    def eval(self, env: dict):
+        return self.left.eval(env) % self.right.eval(env)
+def conv(tree):
+    if tree == 'Block':
+        return conv(tree[0])
+    if tree == 'Val' or tree == 'Int':
+        return Val(int(str(tree)))
+    if tree == 'Add':
+        return Add(conv(tree[0]), conv(tree[1]))
+    print('@TODO', tree.tag)
+    return Val(str(tree))
+def run(src: str):
+    tree = parser(src)
+    if tree.isError():
+        print(repr(tree))
+    else:
+        e = conv(tree)
+        print(repr(e))
+        print(e.eval({}))
+def main():
+    try:
+        while True:
+            s = input('>>> ')
+            if s == '':
+                break
+            run(s)
+    except EOFError:
+        return
+if __name__ == '__main__':
+    main()
 
-assert isinstance(v, Expr) # ==> True
-assert isinstance(v, Val) # ==> True
-assert not isinstance(v, int) 
-
-class Add(Expr):
-    __slots__=['left', 'right']
-    def __init__(self, a, b):
-        self.left = a   # aとb は式
-        self.right = b
-    def eval(self):
-        return self.left.eval() + self.right.eval()
-
-e = Add(Val(1), Val(2))  # 1+2
-assert e.eval() == 3
-
-e = Add(1,2)
-assert e.eval() == 3
 
 
-e = Add(Val(1),Add(Val(2),Val(3)))
-assert e.eval() == 6
+
+
+
+
+
+
+
+
