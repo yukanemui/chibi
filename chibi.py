@@ -56,7 +56,7 @@ def conv(tree):
     if tree == 'Val' or tree == 'Int':
         return Val(int(str(tree)))
     if tree == 'Add':
-        return Asign(conv(tree[0]), conv(tree[1]))
+        return Assign(str(tree[0]), str(tree[1]))
     print('@TODO', tree.tag, repr(tree))
     return Val(str(tree))
 def run(src: str, env: dict):
