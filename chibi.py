@@ -65,8 +65,8 @@ def run(src: str):
         print(repr(tree))
     else:
         e = conv(tree)
-        print(repr(e))
-        print(e.eval({}))
+        print('env', env)
+        print(e.eval(env))
 def main():
     try:
         env = {}
