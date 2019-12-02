@@ -69,11 +69,12 @@ def run(src: str):
         print(e.eval({}))
 def main():
     try:
+        env = {}
         while True:
             s = input('>>> ')
             if s == '':
                 break
-            run(s)
+            run(s, env)
     except EOFError:
         return
 if __name__ == '__main__':
