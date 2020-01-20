@@ -85,4 +85,19 @@ class Mul(Binary):
                 def eval(self, env: dict):
                     if self.name in env:
                         return env[self.name]
-                    raise NameError(self.name)        
+                    raise NameError(self.name)     
+                class Assign(Expr):
+                    __slots__ = ['name', 'e']
+                    def __init__(self, name, e):
+                        self.name = name
+                        self.e = Expr.new(e)
+                    def eval(self, env):
+                        env[self.name] = self.e.eval(env)
+                        return env[self.name]
+                class Block(Expr):
+                    __slots__ = ['exprs']
+                    def __init__(self, *exprs): # 可変長個の引数
+                        self.exprs = exprs  # [e, e2, e3, e4, e5] リストになっている
+                    def eval(self, env):
+                        for e in self.exprs:
+                            e.eval(env)   
