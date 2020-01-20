@@ -76,3 +76,13 @@ class Mul(Binary):
             __slots__ = ['left', 'right']
             def eval(self, env: dict):   # cond ? x : y
                 return 1 if self.left.eval(env) >= self.right.eval(env) else 0
+            class Var(Expr):
+                __slots__ = ['name']
+                def __init__(self, name):
+                    self.name = name
+                def __repr__(self):
+                    return self.name
+                def eval(self, env: dict):
+                    if self.name in env:
+                        return env[self.name]
+                    raise NameError(self.name)        
