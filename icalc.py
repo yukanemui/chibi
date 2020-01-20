@@ -44,3 +44,19 @@ class Mul(Binary):
     __slots__ = ['left', 'right']
     def eval(self, env: dict):
         return self.left.eval(env) * self.right.eval(env)
+    class Div(Binary):
+        __slots__ = ['left', 'right']
+        def eval(self, env: dict):
+            return self.left.eval(env) // self.right.eval(env)
+    class Mod(Binary):
+        __slots__ = ['left', 'right']
+        def eval(self, env: dict):
+            return self.left.eval(env) % self.right.eval(env)
+    class Eq(Binary): # left == right
+        __slots__ = ['left', 'right']
+        def eval(self, env: dict):   # cond ? x : y
+            return 1 if self.left.eval(env) == self.right.eval(env) else 0
+    class Ne(Binary): # left != right
+        __slots__ = ['left', 'right']
+        def eval(self, env: dict):   # cond ? x : y
+            return 1 if self.left.eval(env) != self.right.eval(env) else 0
