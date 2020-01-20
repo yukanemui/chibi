@@ -60,3 +60,19 @@ class Mul(Binary):
         __slots__ = ['left', 'right']
         def eval(self, env: dict):   # cond ? x : y
             return 1 if self.left.eval(env) != self.right.eval(env) else 0
+        class Lt(Binary): # left != right
+            __slots__ = ['left', 'right']
+            def eval(self, env: dict):   # cond ? x : y
+                return 1 if self.left.eval(env) < self.right.eval(env) else 0
+        class Lte(Binary): # left != right
+            __slots__ = ['left', 'right']
+            def eval(self, env: dict):   # cond ? x : y
+                return 1 if self.left.eval(env) <= self.right.eval(env) else 0
+        class Gt(Binary): # left != right
+            __slots__ = ['left', 'right']
+            def eval(self, env: dict):   # cond ? x : y
+                return 1 if self.left.eval(env) > self.right.eval(env) else 0
+        class Gte(Binary): # left != right
+            __slots__ = ['left', 'right']
+            def eval(self, env: dict):   # cond ? x : y
+                return 1 if self.left.eval(env) >= self.right.eval(env) else 0
