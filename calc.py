@@ -26,3 +26,10 @@ class FuncApp(Expr):
         env = copy(env)  # 環境をコピーすることでローカルスコープを作る
         env[name] = v   # 環境から引数を渡す
         return f.body.eval(env)
+    def conv(tree):
+        if tree == 'Block':
+            return conv(tree[0])
+        if tree == 'FuncDecl':   # この２行を追加します
+            return Assign(str(tree[0]), Lambda(str(tree[1]), conv(tree[2])))
+        if tree == 'FuncApp':   # この２行を追加します
+            return FuncApp(conv(tree[0]), conv(tree[1]))
